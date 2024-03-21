@@ -1,0 +1,85 @@
+From: Ralf Jung <post@ralfj.de>
+Date: Wed, 19 Sep 2012 13:12:58 +0200
+Subject: Allow to set slave installation path during compilation
+
+Forwarded: not-needed
+---
+ Makefile |  8 +++++---
+ osspd.c  | 12 ++----------
+ 2 files changed, 7 insertions(+), 13 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 8d8fe87..236176e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -8,6 +8,7 @@ LDFLAGS := -L. -lossp $(LDFLAGS)
+ prefix := /usr/local
+ DESTDIR :=
+ UDEVDIR := /etc/udev/rules.d
++SLAVESDIR := $(prefix)/sbin
+ 
+ ifeq "$(origin OSSPD_CFLAGS)" "undefined"
+ OSSPD_CFLAGS := $(shell pkg-config --cflags fuse)
+@@ -38,8 +39,9 @@ headers := ossp.h ossp-util.h ossp-slave.h
+ all: osspd ossp-padsp ossp-alsap
+ 
+ install:
+-	mkdir -p $(DESTDIR)$(prefix)/sbin
+-	install -m755 osspd ossp-padsp ossp-alsap $(DESTDIR)$(prefix)/sbin
++	mkdir -p $(DESTDIR)$(prefix)/sbin $(DESTDIR)$(SLAVESDIR)
++	install -m755 osspd $(DESTDIR)$(prefix)/sbin
++	install -m755 ossp-padsp ossp-alsap $(DESTDIR)$(SLAVESDIR)
+ 	mkdir -p $(DESTDIR)$(UDEVDIR)
+ 	install -m644 98-osscuse.rules $(DESTDIR)$(UDEVDIR)
+ 
+@@ -50,7 +52,7 @@ libossp.a: ossp.c ossp.h ossp-util.c ossp-util.h ossp-slave.c ossp-slave.h
+ 	$(AR) rc $@ ossp.o ossp-util.o ossp-slave.o
+ 
+ osspd: osspd.c libossp.a $(headers)
+-	$(CC) $(CFLAGS) $(OSSPD_CFLAGS) -o $@ $< $(OSSPD_LDFLAGS) $(LDFLAGS)
++	$(CC) $(CFLAGS) $(OSSPD_CFLAGS) -DSLAVE_DEFAULT_PATH=\"$(SLAVESDIR)\" -o $@ $< $(OSSPD_LDFLAGS) $(LDFLAGS)
+ 
+ ossp-padsp: ossp-padsp.c libossp.a $(headers)
+ 	$(CC) $(CFLAGS) $(OSSP_PADSP_CFLAGS) -o $@ $< $(OSSP_PADSP_LDFLAGS) $(LDFLAGS)
+diff --git a/osspd.c b/osspd.c
+index 1dbe586..6b63c07 100644
+--- a/osspd.c
++++ b/osspd.c
+@@ -2005,7 +2005,7 @@ static const char *usage =
+ "    --max=MAX         maximum number of open streams (default 256)\n"
+ "    --umax=MAX        maximum number of open streams per UID (default --max)\n"
+ "    --exit-on-idle    exit if idle\n"
+-"    --dsp-slave=PATH  DSP slave (default ossp-padsp in the same dir)\n"
++"    --dsp-slave=PATH  DSP slave (default: " SLAVE_DEFAULT_PATH "/ossp-padsp)\n"
+ "    --log=LEVEL       log level (0..6)\n"
+ "    --timestamp       timestamp log messages\n"
+ "    -v                increase verbosity, can be specified multiple times\n"
+@@ -2131,7 +2131,6 @@ int main(int argc, char **argv)
+ 		.max_streams = DFL_MAX_STREAMS,
+ 	};
+ 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
+-	char path_buf[PATH_MAX], *dir;
+ 	char adsp_buf[64] = "", mixer_buf[64] = "";
+ 	struct sigaction sa;
+ 	struct stat stat_buf;
+@@ -2175,19 +2174,12 @@ int main(int argc, char **argv)
+ 	if (sigaction(SIGPIPE, &sa, NULL))
+ 		fatal_e(-errno, "failed to ignore SIGPIPE");
+ 
+-	/* determine slave path and check for availability */
+-	ret = readlink("/proc/self/exe", path_buf, PATH_MAX - 1);
+-	if (ret < 0)
+-		fatal_e(-errno, "failed to determine executable path");
+-	path_buf[ret] = '\0';
+-	dir = dirname(path_buf);
+-
+ 	if (param.dsp_slave_path) {
+ 		strncpy(dsp_slave_path, param.dsp_slave_path, PATH_MAX - 1);
+ 		dsp_slave_path[PATH_MAX - 1] = '\0';
+ 	} else {
+ 		ret = snprintf(dsp_slave_path, PATH_MAX, "%s/%s",
+-			       dir, "ossp-padsp");
++			       SLAVE_DEFAULT_PATH, "ossp-padsp");
+ 		if (ret >= PATH_MAX)
+ 			fatal("dsp slave pathname too long");
+ 	}

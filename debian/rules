@@ -1,4 +1,24 @@
 #!/usr/bin/make -f
 
+SLAVESDIR=/usr/lib/osspd
+UDEVDIR=/lib/udev/rules.d
+
 %:
 	dh $@
+
+override_dh_auto_build:
+	dh_auto_build -- SLAVESDIR=$(SLAVESDIR) UDEVDIR=$(UDEVDIR)
+
+override_dh_auto_install:
+	dh_auto_install -- prefix=/usr SLAVESDIR=$(SLAVESDIR) UDEVDIR=$(UDEVDIR)
+
+override_dh_strip:
+	dh_strip --ddeb-migration='osspd-dbg (<< 1.3.2-7~)'
+
+override_dh_install:
+	dh_install
+	# adding kmod integration
+	install -D -m 0644 debian/osspd.kmod debian/osspd/lib/modules-load.d/osspd.conf
+
+# Disable tests, they require running the osspd
+override_dh_auto_test:

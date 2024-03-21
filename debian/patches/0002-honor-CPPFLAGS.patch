@@ -1,0 +1,22 @@
+From: Ralf Jung <post@ralfj.de>
+Date: Sat, 15 Sep 2012 13:36:23 +0200
+Subject: honor CPPFLAGS
+
+Forwarded: Committed upstream as 3a9a0196
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 8111c9b..8d8fe87 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,7 +2,7 @@
+ # DESTDIR is completely respected
+ CC := gcc
+ AR := ar
+-CFLAGS := -Wall $(CFLAGS)
++CFLAGS := -Wall $(CFLAGS) $(CPPFLAGS)
+ XLDFLAGS := $(LDFLAGS)
+ LDFLAGS := -L. -lossp $(LDFLAGS)
+ prefix := /usr/local

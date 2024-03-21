@@ -1,9 +1,39 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: template-repository
-Source: https://github.com/deepin-community/template-repository
+Upstream-Name: osspd
+Source: https://sourceforge.net/projects/osspd/
 
 Files: *
-Copyright: 2023 Tsic404 <liuheng@deepin.org>
+Copyright: 2008-2010  SUSE Linux Products GmbH
+           2008-2010  Tejun Heo <tj@kernel.org>
+           2009       Maarten Lankhorst <m.b.lankhorst@gmail.com>
+License: GPL-2
+
+Files: debian/*
+Copyright: 2012-2013 Ralf Jung <post@ralfj.de>
+License: GPL-2+
+
+Files: debian/osspd.service
+Copyright: 2013 Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+           2013 Ralf Jung <post@ralfj.de>
+License: GPL-2
+
+
+License: GPL-2
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of version 2 of the GNU General Public License as
+ published by the Free Software Foundation.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,7 +46,7 @@ License: GPL-2+
  GNU General Public License for more details.
  .
  You should have received a copy of the GNU General Public License
- along with this program. If not, see <https://www.gnu.org/licenses/>
+ along with this program. If not, see <http://www.gnu.org/licenses/>
  .
  On Debian systems, the complete text of the GNU General
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".

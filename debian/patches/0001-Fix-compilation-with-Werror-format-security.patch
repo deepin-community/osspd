@@ -1,0 +1,45 @@
+From: Ralf Jung <post@ralfj.de>
+Date: Sat, 15 Sep 2012 13:36:06 +0200
+Subject: Fix compilation with -Werror=format-security
+
+Forwarded: Committed upstream as 097dc7b6
+---
+ ossp-slave.c | 4 ++--
+ osspd.c      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/ossp-slave.c b/ossp-slave.c
+index 4c5cb2d..a290636 100644
+--- a/ossp-slave.c
++++ b/ossp-slave.c
+@@ -89,7 +89,7 @@ void ossp_slave_init(int argc, char **argv)
+ 	}
+ 
+ 	if (!have_uid || !have_gid || ossp_cmd_fd < 0 || ossp_notify_fd < 0) {
+-		fprintf(stderr, usage);
++		fputs(usage, stderr);
+ 		_exit(1);
+ 	}
+ 
+@@ -105,7 +105,7 @@ void ossp_slave_init(int argc, char **argv)
+ 		void *p;
+ 
+ 		if (!mmap_off || !mmap_size) {
+-			fprintf(stderr, usage);
++			fputs(usage, stderr);
+ 			_exit(1);
+ 		}
+ 
+diff --git a/osspd.c b/osspd.c
+index 37c9b35..1dbe586 100644
+--- a/osspd.c
++++ b/osspd.c
+@@ -2109,7 +2109,7 @@ static int process_arg(void *data, const char *arg, int key,
+ 
+ 	switch (key) {
+ 	case 0:
+-		fprintf(stderr, usage);
++		fputs(usage, stderr);
+ 		param->help = 1;
+ 		return 0;
+ 	case 1:

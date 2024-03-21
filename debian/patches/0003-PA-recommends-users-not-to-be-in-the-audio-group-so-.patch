@@ -1,0 +1,26 @@
+From: Ralf Jung <post@ralfj.de>
+Date: Thu, 13 Sep 2012 19:13:25 +0200
+Subject: PA recommends users *not* to be in the audio group,
+ so allow everyone to use these devices
+
+Forwarded: not-needed
+---
+ 98-osscuse.rules | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/98-osscuse.rules b/98-osscuse.rules
+index c1430fd..9b40bec 100644
+--- a/98-osscuse.rules
++++ b/98-osscuse.rules
+@@ -1,7 +1,6 @@
+-# Since these devices are not part of 'sound' subsystem the group is forced
+-# to audio by name
++# Allow everyone to use these devices
+ # /dev/cuse can stay  mode 0660 root:root since osspd is run as root
+ # and drops privileges to user level when opened by user
+-KERNEL=="dsp", GROUP="audio"
+-KERNEL=="mixer", GROUP="audio"
+-KERNEL=="adsp", GROUP="audio"
++KERNEL=="dsp", SUBSYSTEM=="cuse", MODE="0666"
++KERNEL=="mixer", SUBSYSTEM=="cuse", MODE="0666"
++KERNEL=="adsp", SUBSYSTEM=="cuse", MODE="0666"
