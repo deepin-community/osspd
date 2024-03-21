@@ -1,0 +1,26 @@
+From: Ralf Jung <post@ralfj.de>
+Date: Sat, 11 May 2013 14:24:17 +0200
+Subject: Add -pthread compiler and linker flag
+
+(based on patch in Ubuntu by Logan Rosen <logan@ubuntu.com>)
+Forwarded: http://sourceforge.net/mailarchive/forum.php?thread_name=518E3901.8050206%40ralfj.de&forum_name=osspd-users
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 236176e..11f2836 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,9 +2,9 @@
+ # DESTDIR is completely respected
+ CC := gcc
+ AR := ar
+-CFLAGS := -Wall $(CFLAGS) $(CPPFLAGS)
++CFLAGS := -Wall -pthread $(CFLAGS) $(CPPFLAGS)
+ XLDFLAGS := $(LDFLAGS)
+-LDFLAGS := -L. -lossp $(LDFLAGS)
++LDFLAGS := -L. -lossp -pthread $(LDFLAGS)
+ prefix := /usr/local
+ DESTDIR :=
+ UDEVDIR := /etc/udev/rules.d

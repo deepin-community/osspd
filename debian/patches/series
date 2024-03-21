@@ -1,0 +1,10 @@
+0001-Fix-compilation-with-Werror-format-security.patch
+0002-honor-CPPFLAGS.patch
+0003-PA-recommends-users-not-to-be-in-the-audio-group-so-.patch
+0004-Allow-to-set-slave-installation-path-during-compilat.patch
+0005-Add-pthread-compiler-and-linker-flag.patch
+0006-fix-build-on-MIPS.patch
+0007-cross.patch
+GIT-fix-adsp_se.patch
+GIT-fix-compiler-warnings.patch
+Hack-to-work-with-modern-PulseAudio.patch

@@ -1,0 +1,24 @@
+From 4c6161d951daa98f6463904f76b3fa2ce7216194 Mon Sep 17 00:00:00 2001
+From: Tejun Heo <tj@kernel.org>
+Date: Mon, 21 Feb 2011 11:54:06 +0100
+Subject: [PATCH] adsp_se was incorrectly created with dsp_ops.  Create it with
+ adsp_ops.
+
+Reported-by: Aaron <aaron.hamid@gmail.com>
+---
+ osspd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/osspd.c b/osspd.c
+index 37c9b35..df1cfc4 100644
+--- a/osspd.c
++++ b/osspd.c
+@@ -2253,7 +2253,7 @@ int main(int argc, char **argv)
+ 					   param.mixer_major, param.mixer_minor,
+ 					   args.argc, args.argv);
+ 	if (strlen(param.adsp_name))
+-		adsp_se = setup_ossp_cuse(&dsp_ops, param.adsp_name,
++		adsp_se = setup_ossp_cuse(&adsp_ops, param.adsp_name,
+ 					  param.adsp_major, param.adsp_minor,
+ 					  args.argc, args.argv);
+ 

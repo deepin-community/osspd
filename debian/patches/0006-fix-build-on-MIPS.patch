@@ -1,0 +1,20 @@
+From: Ralf Jung <post@ralfj.de>
+Date: Tue, 25 Dec 2018 18:51:01 +0100
+Subject: fix build on MIPS
+
+---
+ osspd.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/osspd.c b/osspd.c
+index 6b63c07..70eff98 100644
+--- a/osspd.c
++++ b/osspd.c
+@@ -22,6 +22,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <signal.h>
++#include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <sys/stat.h>
+ #include <sys/epoll.h>

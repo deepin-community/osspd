@@ -1,0 +1,2 @@
+lib/udev/rules.d/98-osscuse.rules
+usr/sbin/osspd
